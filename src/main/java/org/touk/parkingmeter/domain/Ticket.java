@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -16,6 +17,7 @@ public class Ticket {
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @CreatedDate
+    @NotNull
     private Date startDate;
 
     @Temporal(value = TemporalType.TIMESTAMP)
@@ -26,8 +28,5 @@ public class Ticket {
 
     @OneToOne(mappedBy = "ticket")
     private User user;
-
-
-
 
 }
