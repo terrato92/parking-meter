@@ -25,13 +25,7 @@ public class User {
     private boolean vip;
 
     @OneToOne
+    @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
-    public void setTicket(boolean vip){
-        if (vip){
-            ticket = new Vip();
-        } else {
-            ticket = new Regular();
-        }
-    }
 }

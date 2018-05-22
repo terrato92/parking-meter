@@ -7,9 +7,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data
-public abstract class Ticket {
+public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +27,7 @@ public abstract class Ticket {
     @OneToOne(mappedBy = "ticket")
     private User user;
 
-    public abstract double getPrice();
+
+
 
 }
