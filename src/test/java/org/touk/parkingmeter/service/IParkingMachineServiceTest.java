@@ -10,6 +10,8 @@ import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
@@ -41,7 +43,7 @@ public class IParkingMachineServiceTest {
     }
 
     @Test
-    public void startTime() {
+    public void startTime() throws ParseException {
         ParkingMachine parkingMachine = new ParkingMachine();
         parkingMachine.setId(2L);
 
@@ -51,7 +53,6 @@ public class IParkingMachineServiceTest {
         Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
 
         when(userRepository.findById(anyLong())).thenReturn(userOptional);
-
         when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
 
         boolean start = iParkingMachine.startTime(parkingMachine, user, user.getTicket().getPlate());
@@ -60,33 +61,47 @@ public class IParkingMachineServiceTest {
         assertTrue(start);
     }
 
+
+    @Test
+    public void check() throws ParseException {
+        User user = getUser();
+        Optional<User> userOptional = Optional.of(user);
+
+        when(userRepository.findById(anyLong())).thenReturn(userOptional);
+
+        Date start = user.getTicket().getStartDate();
+
+        double price = iParkingMachine.check(user);
+
+
+        assertNotNull(start);
+    }
+
+    @Test
+    public void endTime() {
+
+    }
+
     private Date getDate() {
         Instant timestamp = Instant.now();
         return Date.from(timestamp);
     }
 
-
-    @Test
-    public void check() {
-        User user = getUser();
-
-
-    }
-
-    @Test
-    public void endTime() {
-    }
-
-    private User getUser() {
+    private User getUser() throws ParseException {
         User user = new User();
         user.setId(1L);
         user.setEmail("okm@nj.pl");
         user.setPassword("po");
         user.setVip(true);
 
+        String dateee = "23/05/2018 15:23:25";
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        Date d = formatter.parse(dateee);
+
         Ticket ticket = user.getTicket();
-        Date startTime = getDate();
-        ticket.setStartDate(startTime);
+        ticket.setStartDate(d);
         ticket.setPlate("lwd2345");
         user.setTicket(ticket);
 
