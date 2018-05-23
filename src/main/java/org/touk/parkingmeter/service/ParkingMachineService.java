@@ -3,8 +3,6 @@ package org.touk.parkingmeter.service;
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.User;
 
-import java.util.Date;
-
 public interface ParkingMachineService {
 
 

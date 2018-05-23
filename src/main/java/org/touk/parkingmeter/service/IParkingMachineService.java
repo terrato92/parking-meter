@@ -6,6 +6,12 @@ import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 
 public class IParkingMachineService implements ParkingMachineService {
@@ -15,6 +21,8 @@ public class IParkingMachineService implements ParkingMachineService {
 
     @Autowired
     private final ParkingMachineRepository parkingMachineRepository;
+
+    private CounterService counterService;
 
 
     public IParkingMachineService(UserRepository userRepository, ParkingMachineRepository parkingMachineRepository) {
@@ -53,11 +61,92 @@ public class IParkingMachineService implements ParkingMachineService {
 
     @Override
     public double check(User user) {
-        return 0;
+
+        Long timeAtTheParking = calculateTimeStop(user);
+
+        double price = 0;
+
+        if (user.isVip()){
+
+            counterService = new ICounterServiceVip();
+            price = counterService.currentPrice(timeAtTheParking);
+        } else if (!user.isVip()){
+
+            counterService = new ICounterServiceRegular();
+            price = counterService.currentPrice(timeAtTheParking);
+
+        }
+
+        return price;
     }
 
     @Override
     public boolean endTime(User user) {
         return false;
     }
+
+
+    private Long calculateTimeStop(User user) {
+        Optional<User> userOptional = userRepository.findById(user.getId());
+
+        if (userOptional.isPresent()) {
+            User client = userOptional.get();
+            Date start = client.getTicket().getStartDate();
+            Date d2 = null;
+
+            String checking = null;
+
+            LocalDateTime arrivalDate = LocalDateTime.now();
+            try {
+
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+                checking = arrivalDate.format(format);
+                System.out.printf("Arriving at :  %s %n", checking);
+
+                d2 = formatter.parse(checking);
+
+                //in milliseconds
+                long diff = d2.getTime() - start.getTime();
+
+                long diffSeconds = diff / 1000 % 60;
+                long diffMinutes = diff / (60 * 1000) % 60;
+                long diffHours = diff / (60 * 60 * 1000) % 24;
+                long diffDays = diff / (24 * 60 * 60 * 1000);
+
+                System.out.print(diffDays + " days, ");
+                System.out.print(diffHours + " hours, ");
+                System.out.print(diffMinutes + " minutes, ");
+                System.out.print(diffSeconds + " seconds.");
+
+            } catch (DateTimeException ex) {
+                System.out.printf("%s can't be formatted!%n", arrivalDate);
+                ex.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            return d2.getTime() - start.getTime();
+
+        } else {
+            throw new NullPointerException("NULL");
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
