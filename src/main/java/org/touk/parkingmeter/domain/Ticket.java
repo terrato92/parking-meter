@@ -5,6 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.Date;
 
 @Entity
@@ -27,5 +28,9 @@ public class Ticket {
 
     private String plate;
 
+    public void setStartDate(){
+        Instant nowTime = Instant.now();
+        startDate = Date.from(nowTime);
+    }
 
 }

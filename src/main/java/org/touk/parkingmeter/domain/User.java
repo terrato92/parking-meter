@@ -25,8 +25,8 @@ public class User {
 
     private boolean vip;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ticket_id")
-    private Ticket ticket;
+    private Ticket ticket = new Ticket();
 
 }
