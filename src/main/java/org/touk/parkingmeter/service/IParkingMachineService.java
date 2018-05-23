@@ -16,7 +16,6 @@ public class IParkingMachineService implements ParkingMachineService {
     @Autowired
     private final ParkingMachineRepository parkingMachineRepository;
 
-    ParkingMachineService parkingMachineService;
 
     public IParkingMachineService(UserRepository userRepository, ParkingMachineRepository parkingMachineRepository) {
         this.userRepository = userRepository;
