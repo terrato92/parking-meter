@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Service
-public interface Counter {
+public interface CounterService {
 
     double parkingRates(Date startTime, Date endTime);
     double currentPrice(Date startTime);

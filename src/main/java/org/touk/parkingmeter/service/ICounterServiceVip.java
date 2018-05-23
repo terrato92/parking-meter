@@ -2,7 +2,8 @@ package org.touk.parkingmeter.service;
 
 import java.util.Date;
 
-public class ICounterRegular implements Counter {
+public class ICounterServiceVip implements CounterService {
+
 
 
 

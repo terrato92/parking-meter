@@ -29,7 +29,7 @@ public class IParkingMachineServiceTest {
 
     IParkingMachineService iParkingMachine;
 
-    private Counter counter;
+    private CounterService counterService;
 
 
     @Before

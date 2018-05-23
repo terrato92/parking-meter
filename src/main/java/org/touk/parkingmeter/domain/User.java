@@ -1,7 +1,6 @@
 package org.touk.parkingmeter.domain;
 
 import lombok.Data;
-import lombok.Generated;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
