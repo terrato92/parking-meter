@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+@Table
 @Data
 public class Ticket {
 
@@ -26,7 +27,5 @@ public class Ticket {
 
     private String plate;
 
-    @OneToOne(mappedBy = "ticket")
-    private User user;
 
 }

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "Client")
 @Data
 public class User {
 
@@ -24,8 +25,5 @@ public class User {
 
     private boolean vip;
 
-    @OneToOne
-    @JoinColumn(name = "ticket_id")
-    private Ticket ticket;
 
 }
