@@ -5,15 +5,13 @@ import java.util.Date;
 public class ICounterServiceVip implements CounterService {
 
 
-
-
     @Override
-    public double parkingRates(Date startTime, Date endTime) {
+    public double parkingRates(Long timeAtParking) {
         return 0;
     }
 
     @Override
-    public double currentPrice(Date startTime) {
+    public double currentPrice(Long timeAtParking) {
         return 0;
     }
 }

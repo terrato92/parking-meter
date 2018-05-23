@@ -7,6 +7,6 @@ import java.util.Date;
 @Service
 public interface CounterService {
 
-    double parkingRates(Date startTime, Date endTime);
-    double currentPrice(Date startTime);
+    double parkingRates(Long timeAtParking);
+    double currentPrice(Long timeAtParking);
 }
