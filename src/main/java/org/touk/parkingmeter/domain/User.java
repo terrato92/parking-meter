@@ -25,5 +25,8 @@ public class User {
 
     private boolean vip;
 
+    @OneToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
 
 }
