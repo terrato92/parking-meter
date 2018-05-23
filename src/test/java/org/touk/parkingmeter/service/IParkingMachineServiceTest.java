@@ -45,18 +45,7 @@ public class IParkingMachineServiceTest {
         ParkingMachine parkingMachine = new ParkingMachine();
         parkingMachine.setId(2L);
 
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("okm@nj.pl");
-        user.setPassword("po");
-        user.setVip(true);
-
-        Instant timestamp = Instant.now();
-        Date startTime = Date.from(timestamp);
-
-        Ticket ticket = user.getTicket();
-        ticket.setStartDate(startTime);
-        ticket.setPlate("lwd2345");
+        User user = getUser();
 
         Optional<User> userOptional = Optional.of(user);
         Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
@@ -71,11 +60,36 @@ public class IParkingMachineServiceTest {
         assertTrue(start);
     }
 
+    private Date getDate() {
+        Instant timestamp = Instant.now();
+        return Date.from(timestamp);
+    }
+
+
     @Test
     public void check() {
+        User user = getUser();
+
+
     }
 
     @Test
     public void endTime() {
+    }
+
+    private User getUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("okm@nj.pl");
+        user.setPassword("po");
+        user.setVip(true);
+
+        Ticket ticket = user.getTicket();
+        Date startTime = getDate();
+        ticket.setStartDate(startTime);
+        ticket.setPlate("lwd2345");
+        user.setTicket(ticket);
+
+        return user;
     }
 }
