@@ -74,7 +74,7 @@ public class IParkingMachineService implements ParkingMachineService {
 
             if (user.isVip()) {
 
-                counterService = new ICounterServiceVip();
+                counterService = new ICounterServiceVip(userRepository);
                 price = counterService.parkingRates(user, timeAtTheParking);
             } else if (!user.isVip()) {
 
