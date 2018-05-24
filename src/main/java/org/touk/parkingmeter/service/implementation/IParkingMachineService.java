@@ -68,7 +68,7 @@ public class IParkingMachineService implements ParkingMachineService {
 
         if (userOptional.isPresent()) {
 
-            Long timeAtTheParking = calculateTimeParking(user);
+            Long timeAtTheParking = calculateTimeParking(user, false);
 
             double price = 0;
 
@@ -104,6 +104,7 @@ public class IParkingMachineService implements ParkingMachineService {
             if (!userOptional.isPresent()) {
                 return false;
             } else {
+                Long timeAtTheParking = calculateTimeParking(user, true);
 
                 ParkingMachine parkingMachine1 = parkingMachineOptional.get();
 
@@ -111,6 +112,7 @@ public class IParkingMachineService implements ParkingMachineService {
                 client.getTicket().endDate();
                 client.setParkingFee(checkFee(user));
                 client.getTicket().setPlate(null);
+                double fee = counterService.parkingRates(user, timeAtTheParking);
 
                 userRepository.save(user);
                 parkingMachineRepository.save(parkingMachine1);
@@ -120,7 +122,7 @@ public class IParkingMachineService implements ParkingMachineService {
     }
 
 
-    private Long calculateTimeParking(User user) {
+    private Long calculateTimeParking(User user, boolean end) {
         Optional<User> userOptional = userRepository.findById(user.getId());
 
         if (userOptional.isPresent()) {
@@ -161,6 +163,8 @@ public class IParkingMachineService implements ParkingMachineService {
                 e.printStackTrace();
             }
 
+            if (end)
+                client.getTicket().setEndDate(d2);
 
             return d2.getTime() - start.getTime();
 
