@@ -1,9 +1,10 @@
-package org.touk.parkingmeter.service;
+package org.touk.parkingmeter.service.implementation;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.UserRepository;
+import org.touk.parkingmeter.service.CounterService;
 
 public class ICounterServiceRegular implements CounterService {
 

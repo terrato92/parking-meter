@@ -8,7 +8,7 @@ public interface ParkingMachineService {
 
     boolean startTime(ParkingMachine parkingMachine, User user, String plate);
 
-    double check(User user);
+    double checkFee(User user);
 
-    boolean endTime(User user);
+    boolean endTime(ParkingMachine parkingMachine, User user);
 }

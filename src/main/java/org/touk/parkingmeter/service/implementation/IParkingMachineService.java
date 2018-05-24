@@ -1,10 +1,12 @@
-package org.touk.parkingmeter.service;
+package org.touk.parkingmeter.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
+import org.touk.parkingmeter.service.CounterService;
+import org.touk.parkingmeter.service.ParkingMachineService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,13 +62,13 @@ public class IParkingMachineService implements ParkingMachineService {
     }
 
     @Override
-    public double check(User user) {
+    public double checkFee(User user) {
 
         Optional<User> userOptional = Optional.of(user);
 
         if (userOptional.isPresent()) {
 
-            Long timeAtTheParking = calculateTimeStop(user);
+            Long timeAtTheParking = calculateTimeParking(user);
 
             double price = 0;
 
@@ -86,16 +88,39 @@ public class IParkingMachineService implements ParkingMachineService {
         } else {
             throw new NullPointerException("NULL");
         }
-
     }
 
     @Override
-    public boolean endTime(User user) {
-        return false;
+    public boolean endTime(ParkingMachine parkingMachine, User user) {
+
+        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findById(parkingMachine.getId());
+
+        if (!parkingMachineOptional.isPresent()) {
+            return false;
+        } else {
+
+            Optional<User> userOptional = userRepository.findById(user.getId());
+
+            if (!userOptional.isPresent()) {
+                return false;
+            } else {
+
+                ParkingMachine parkingMachine1 = parkingMachineOptional.get();
+
+                User client = userOptional.get();
+                client.getTicket().endDate();
+                client.setParkingFee(checkFee(user));
+                client.getTicket().setPlate(null);
+
+                userRepository.save(user);
+                parkingMachineRepository.save(parkingMachine1);
+                return true;
+            }
+        }
     }
 
 
-    private Long calculateTimeStop(User user) {
+    private Long calculateTimeParking(User user) {
         Optional<User> userOptional = userRepository.findById(user.getId());
 
         if (userOptional.isPresent()) {
