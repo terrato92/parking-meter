@@ -54,11 +54,11 @@ public class IParkingMachineService implements ParkingMachineService {
                 Ticket ticket = new Ticket();
                 ticket.setPlate(plate);
                 ticket.setStartDate();
+                ticket.setParkingMachine(parkingMachine);
 
-                parkingMachine.addTicket(user.getTicket());
+
 
 //                save ticket
-
 
                 return true;
             }
