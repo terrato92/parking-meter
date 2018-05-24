@@ -6,6 +6,5 @@ import org.touk.parkingmeter.domain.User;
 @Service
 public interface CounterService {
 
-
     double parkingRates(User user, Long timeAtParking);
 }

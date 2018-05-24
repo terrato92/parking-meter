@@ -52,7 +52,7 @@ public class IParkingMachineService implements ParkingMachineService {
                 User client = userOptional.get();
                 client.getTicket().setPlate(plate);
                 client.getTicket().setStartDate();
-                parkingMachine.addUser(client);
+                parkingMachine.addTicket(client.getTicket());
 
                 userRepository.save(user);
                 parkingMachineRepository.save(parkingMachine1);
@@ -105,8 +105,6 @@ public class IParkingMachineService implements ParkingMachineService {
                 return false;
             } else {
                 Long timeAtTheParking = calculateTimeParking(user, true);
-
-                ParkingMachine parkingMachine1 = parkingMachineOptional.get();
 
                 User client = userOptional.get();
                 client.getTicket().endDate();

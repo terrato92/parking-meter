@@ -3,9 +3,7 @@ package org.touk.parkingmeter.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,10 +15,9 @@ public class ParkingMachine {
     private Long id;
 
     @OneToMany
-    Set<User> users = new HashSet<>();
+    Set<Ticket> ticket = new HashSet<>();
 
-    public void addUser(User user){
-        users.add(user);
+    public void addTicket(Ticket ticket){
+
     }
-
 }
