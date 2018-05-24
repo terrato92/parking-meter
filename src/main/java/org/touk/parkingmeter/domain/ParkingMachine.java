@@ -20,4 +20,7 @@ public class ParkingMachine {
     private Long longitude;
     private Long latitude;
 
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
 }

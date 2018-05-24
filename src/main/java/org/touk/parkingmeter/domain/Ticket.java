@@ -38,9 +38,9 @@ public class Ticket {
         startDate = Date.from(nowTime);
     }
 
-    public void endDate(){
+    public void setEndDate(){
         Instant nowTime = Instant.now();
-        startDate = Date.from(nowTime);
+        endDate = Date.from(nowTime);
     }
 
 }
