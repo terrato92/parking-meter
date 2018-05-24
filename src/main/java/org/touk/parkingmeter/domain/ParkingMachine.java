@@ -15,7 +15,10 @@ public class ParkingMachine {
     private Long id;
 
     @OneToMany
-    Set<Ticket> ticket = new HashSet<>();
+    Set<Ticket> tickets = new HashSet<>();
+
+    private Long longitude;
+    private Long latitude;
 
     public void addTicket(Ticket ticket){
 

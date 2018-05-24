@@ -29,6 +29,6 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ticket_id")
-    private Ticket ticket = new Ticket();
+    private Ticket ticket;
 
 }
