@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-public class ICounterServiceRegularTest {
+public class ICounterServiceTest {
 
     @Mock
     private UserRepository userRepository;
