@@ -12,95 +12,72 @@ import org.touk.parkingmeter.repositories.UserRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-public class IParkingMachineServiceTest {
+public class ICounterServiceRegularTest {
 
     @Mock
     private UserRepository userRepository;
 
     @Mock
-    ParkingMachineRepository parkingMachineRepository;
+    private ParkingMachineRepository parkingMachineRepository;
 
-    IParkingMachineService iParkingMachine;
+    CounterService counterService;
 
-    private CounterService counterService;
+    IParkingMachineService iParkingMachineService;
 
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        iParkingMachine = new IParkingMachineService(userRepository, parkingMachineRepository);
-
+        iParkingMachineService = new IParkingMachineService(userRepository, parkingMachineRepository);
     }
 
     @Test
-    public void startTime() throws ParseException {
+    public void parkingRates() throws ParseException {
+        User user = getUser();
+        Optional<User> userOptional = Optional.of(user);
+
         ParkingMachine parkingMachine = new ParkingMachine();
         parkingMachine.setId(2L);
-
-        User user = getUser();
-
-        Optional<User> userOptional = Optional.of(user);
+        parkingMachine.addUser(user);
         Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
 
-        when(userRepository.findById(anyLong())).thenReturn(userOptional);
         when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
-
-        boolean start = iParkingMachine.startTime(parkingMachine, user, user.getTicket().getPlate());
-
-        assertEquals(parkingMachine.getUsers().size(), 1);
-        assertTrue(start);
-    }
-
-
-    @Test
-    public void check() throws ParseException {
-        User user = getUser();
-        Optional<User> userOptional = Optional.of(user);
-
         when(userRepository.findById(anyLong())).thenReturn(userOptional);
 
-        Date start = user.getTicket().getStartDate();
+        double fee = iParkingMachineService.check(user);
 
-        double price = iParkingMachine.check(user);
+        assertEquals(0, Double.compare(1, fee));
 
-
-        assertNotNull(start);
     }
 
     @Test
-    public void endTime() {
-
+    public void currentPrice() {
     }
 
-    private Date getDate() {
-        Instant timestamp = Instant.now();
-        return Date.from(timestamp);
-    }
 
     private User getUser() throws ParseException {
         User user = new User();
         user.setId(1L);
         user.setEmail("okm@nj.pl");
         user.setPassword("po");
-        user.setVip(true);
+        user.setVip(false);
 
-        String dateee = "23/05/2018 23:23:25";
+        String dateee = "24/05/2018 14:10:25";
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         Date d = formatter.parse(dateee);
 
         Ticket ticket = user.getTicket();
+        ticket.setId(1L);
         ticket.setStartDate(d);
         ticket.setPlate("lwd2345");
         user.setTicket(ticket);
