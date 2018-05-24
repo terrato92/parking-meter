@@ -6,7 +6,7 @@ import org.touk.parkingmeter.domain.User;
 public interface ParkingMachineService {
 
 
-    boolean startTime(ParkingMachine parkingMachine, Long userId, String plate);
+    boolean startTime(Long parkingID, Long userId, String plate);
 
     double checkFee(User user);
 

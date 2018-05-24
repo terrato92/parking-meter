@@ -34,9 +34,9 @@ public class IParkingMachineService implements ParkingMachineService {
     }
 
     @Override
-    public boolean startTime(ParkingMachine parkingMachine, Long userId, String plate) {
+    public boolean startTime(Long parkingID, Long userId, String plate) {
 
-        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findById(parkingMachine.getId());
+        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findById(parkingID);
 
         if (!parkingMachineOptional.isPresent()) {
             throw new RuntimeException("Error couldn't find park machine");
@@ -48,19 +48,18 @@ public class IParkingMachineService implements ParkingMachineService {
                 throw new  RuntimeException("Error couldn't find user.");
             } else {
 
-                ParkingMachine parkingMachine1 = parkingMachineOptional.get();
+                ParkingMachine parkingMachine = parkingMachineOptional.get();
                 User user = userOptional.get();
 
                 Ticket ticket = new Ticket();
                 ticket.setPlate(plate);
                 ticket.setStartDate();
 
-
-
                 parkingMachine.addTicket(user.getTicket());
 
-                userRepository.save(user);
-                parkingMachineRepository.save(parkingMachine1);
+//                save ticket
+
+
                 return true;
             }
         }
