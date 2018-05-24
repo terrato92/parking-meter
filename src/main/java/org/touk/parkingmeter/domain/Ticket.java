@@ -33,7 +33,6 @@ public class Ticket {
     @ManyToOne
     private User user;
 
-
     public void setStartDate(){
         Instant nowTime = Instant.now();
         startDate = Date.from(nowTime);
