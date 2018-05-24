@@ -2,6 +2,7 @@ package org.touk.parkingmeter.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.touk.parkingmeter.domain.ParkingMachine;
+import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
@@ -33,26 +34,30 @@ public class IParkingMachineService implements ParkingMachineService {
     }
 
     @Override
-    public boolean startTime(ParkingMachine parkingMachine, User user, String plate) {
+    public boolean startTime(ParkingMachine parkingMachine, Long userId, String plate) {
 
         Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findById(parkingMachine.getId());
 
         if (!parkingMachineOptional.isPresent()) {
-            return false;
+            throw new RuntimeException("Error couldn't find park machine");
         } else {
 
-            Optional<User> userOptional = userRepository.findById(user.getId());
+            Optional<User> userOptional = userRepository.findById(userId);
 
             if (!userOptional.isPresent()) {
-                return false;
+                throw new  RuntimeException("Error couldn't find user.");
             } else {
 
                 ParkingMachine parkingMachine1 = parkingMachineOptional.get();
+                User user = userOptional.get();
 
-                User client = userOptional.get();
-                client.getTicket().setPlate(plate);
-                client.getTicket().setStartDate();
-                parkingMachine.addTicket(client.getTicket());
+                Ticket ticket = new Ticket();
+                ticket.setPlate(plate);
+                ticket.setStartDate();
+
+
+
+                parkingMachine.addTicket(user.getTicket());
 
                 userRepository.save(user);
                 parkingMachineRepository.save(parkingMachine1);
@@ -86,7 +91,7 @@ public class IParkingMachineService implements ParkingMachineService {
             return price;
 
         } else {
-            throw new NullPointerException("NULL");
+            throw new RuntimeException("Couldn't find park machine.");
         }
     }
 
@@ -96,7 +101,7 @@ public class IParkingMachineService implements ParkingMachineService {
         Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findById(parkingMachine.getId());
 
         if (!parkingMachineOptional.isPresent()) {
-            return false;
+            throw new RuntimeException("Couldn't find park machine");
         } else {
 
             Optional<User> userOptional = userRepository.findById(user.getId());
