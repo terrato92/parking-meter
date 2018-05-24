@@ -9,6 +9,7 @@ import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
+import org.touk.parkingmeter.service.implementation.IParkingMachineService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,25 +42,6 @@ public class ICounterServiceRegularTest {
 
     @Test
     public void parkingRates() throws ParseException {
-        User user = getUser();
-        Optional<User> userOptional = Optional.of(user);
-
-        ParkingMachine parkingMachine = new ParkingMachine();
-        parkingMachine.setId(2L);
-        parkingMachine.addUser(user);
-        Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
-
-        when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
-        when(userRepository.findById(anyLong())).thenReturn(userOptional);
-
-        double fee = iParkingMachineService.check(user);
-
-        assertEquals(0, Double.compare(1, fee));
-
-    }
-
-    @Test
-    public void currentPrice() {
     }
 
 

@@ -9,6 +9,7 @@ import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
+import org.touk.parkingmeter.service.implementation.IParkingMachineService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,14 +68,17 @@ public class IParkingMachineServiceTest {
         User user = getUser();
         Optional<User> userOptional = Optional.of(user);
 
+        ParkingMachine parkingMachine = new ParkingMachine();
+        parkingMachine.setId(2L);
+        parkingMachine.addUser(user);
+        Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
+
+        when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
         when(userRepository.findById(anyLong())).thenReturn(userOptional);
 
-        Date start = user.getTicket().getStartDate();
+        double fee = iParkingMachine.checkFee(user);
 
-        double price = iParkingMachine.check(user);
-
-
-        assertNotNull(start);
+        assertEquals(0, Double.compare(1, fee));
     }
 
     @Test
@@ -94,7 +98,7 @@ public class IParkingMachineServiceTest {
         user.setPassword("po");
         user.setVip(true);
 
-        String dateee = "23/05/2018 23:23:25";
+        String dateee = "24/05/2018 16:23:25";
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
