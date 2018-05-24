@@ -27,6 +27,9 @@ public class Ticket {
 
     private String plate;
 
+    @ManyToOne
+    private ParkingMachine parkingMachine;
+
 
     public void setStartDate(){
         Instant nowTime = Instant.now();
