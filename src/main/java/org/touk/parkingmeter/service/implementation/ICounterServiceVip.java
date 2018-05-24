@@ -7,15 +7,8 @@ import org.touk.parkingmeter.service.CounterService;
 
 public class ICounterServiceVip implements CounterService {
 
-    @Autowired
-    private final UserRepository userRepository;
-
-    public ICounterServiceVip(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @Override
-    public double parkingRates(User user, Long timeAtParking) {
+    public double parkingRates(Long timeAtParking) {
 
         long diffHours = timeAtParking / (60 * 60 * 1000) % 24;
         double fee = 0;

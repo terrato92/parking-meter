@@ -1,22 +1,12 @@
 package org.touk.parkingmeter.service.implementation;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.touk.parkingmeter.domain.User;
-import org.touk.parkingmeter.repositories.UserRepository;
 import org.touk.parkingmeter.service.CounterService;
 
 public class ICounterServiceRegular implements CounterService {
 
-    @Autowired
-    private final UserRepository userRepository;
-
-    public ICounterServiceRegular(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @Override
-    public double parkingRates(User user, Long timeAtParking) {
+    public double parkingRates(Long timeAtParking) {
 
         long diffHours = timeAtParking / (60 * 60 * 1000) % 24;
         double fee = 0;

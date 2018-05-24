@@ -5,6 +5,7 @@ import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
+import org.touk.parkingmeter.repositories.TicketRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
 import org.touk.parkingmeter.service.CounterService;
 import org.touk.parkingmeter.service.ParkingMachineService;
@@ -23,18 +24,22 @@ public class IParkingMachineService implements ParkingMachineService {
     private final UserRepository userRepository;
 
     @Autowired
+    private final TicketRepository ticketRepository;
+
+    @Autowired
     private final ParkingMachineRepository parkingMachineRepository;
 
     private CounterService counterService;
 
 
-    public IParkingMachineService(UserRepository userRepository, ParkingMachineRepository parkingMachineRepository) {
+    public IParkingMachineService(UserRepository userRepository, TicketRepository ticketRepository, ParkingMachineRepository parkingMachineRepository) {
         this.userRepository = userRepository;
+        this.ticketRepository = ticketRepository;
         this.parkingMachineRepository = parkingMachineRepository;
     }
 
     @Override
-    public boolean startTime(Long longitude, Long latitude, Long userId, String plate) {
+    public Ticket createTicket(Long longitude, Long latitude, Long userId, String plate) {
 
         Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findByNearestPoints(longitude, latitude);
 
@@ -45,46 +50,44 @@ public class IParkingMachineService implements ParkingMachineService {
             Optional<User> userOptional = userRepository.findById(userId);
 
             if (!userOptional.isPresent()) {
-                throw new  RuntimeException("Error couldn't find user.");
+                throw new RuntimeException("Error couldn't find user.");
             } else {
 
                 ParkingMachine parkingMachine = parkingMachineOptional.get();
-                User user = userOptional.get();
 
                 Ticket ticket = new Ticket();
                 ticket.setPlate(plate);
                 ticket.setStartDate();
                 ticket.setParkingMachine(parkingMachine);
 
+                ticketRepository.save(ticket);
 
-
-//                save ticket
-
-                return true;
+                return ticket;
             }
         }
     }
 
     @Override
-    public double checkFee(User user) {
+    public double checkFee(Long ticketId) {
 
-        Optional<User> userOptional = Optional.of(user);
+        Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
 
-        if (userOptional.isPresent()) {
+        if (ticketOptional.isPresent()) {
+            Ticket ticket = ticketOptional.get();
 
-            Long timeAtTheParking = calculateTimeParking(user, false);
-
+            Long timeAtTheParking = calculateTimeParking(ticket, false);
+            User user = ticket.getUser();
             double price = 0;
+
 
             if (user.isVip()) {
 
-                counterService = new ICounterServiceVip(userRepository);
-                price = counterService.parkingRates(user, timeAtTheParking);
+                counterService = new ICounterServiceVip();
+                price = counterService.parkingRates(timeAtTheParking);
             } else if (!user.isVip()) {
 
-                counterService = new ICounterServiceRegular(userRepository);
-                price = counterService.parkingRates(user, timeAtTheParking);
-
+                counterService = new ICounterServiceRegular();
+                price = counterService.parkingRates(timeAtTheParking);
             }
 
             return price;
@@ -95,78 +98,71 @@ public class IParkingMachineService implements ParkingMachineService {
     }
 
     @Override
-    public boolean endTime(ParkingMachine parkingMachine, User user) {
+    public double endTime(Long ticketId) {
 
-        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findById(parkingMachine.getId());
+        Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
 
-        if (!parkingMachineOptional.isPresent()) {
+        if (!ticketOptional.isPresent()) {
             throw new RuntimeException("Couldn't find park machine");
         } else {
+            Ticket ticket = ticketOptional.get();
+            ticket.endDate();
+            ticket.setPlate(null);
 
-            Optional<User> userOptional = userRepository.findById(user.getId());
+            User user = ticket.getUser();
+            user.setParkingFee(checkFee(ticketId));
 
-            if (!userOptional.isPresent()) {
-                return false;
-            } else {
-                Long timeAtTheParking = calculateTimeParking(user, true);
+            Long timeAtTheParking = calculateTimeParking(ticket, true);
 
-                User client = userOptional.get();
-                client.getTicket().endDate();
-                client.setParkingFee(checkFee(user));
-                client.getTicket().setPlate(null);
+            double fee = counterService.parkingRates(timeAtTheParking);
+            System.out.println("FEE: " + fee);
 
-                double fee = counterService.parkingRates(user, timeAtTheParking);
-                System.out.println("FEE: " + fee);
-
-                userRepository.save(user);
-                return true;
-            }
+            return fee;
         }
     }
 
+    private Long calculateTimeParking(Ticket ticket, boolean end) {
 
-    private Long calculateTimeParking(User user, boolean end) {
+        Date start = ticket.getStartDate();
+        Date d2 = null;
 
-        Date start = user.getTicket().getStartDate();
-            Date d2 = null;
+        String checking = null;
 
-            String checking = null;
+        LocalDateTime arrivalDate = LocalDateTime.now();
+        try {
 
-            LocalDateTime arrivalDate = LocalDateTime.now();
-            try {
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-                DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            checking = arrivalDate.format(format);
+            System.out.printf("Arriving at:  %s %n", start);
 
-                checking = arrivalDate.format(format);
-                System.out.printf("Arriving at:  %s %n", start);
+            d2 = formatter.parse(checking);
 
-                d2 = formatter.parse(checking);
+            //in milliseconds
+            long diff = d2.getTime() - start.getTime();
 
-                //in milliseconds
-                long diff = d2.getTime() - start.getTime();
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
 
-                long diffSeconds = diff / 1000 % 60;
-                long diffMinutes = diff / (60 * 1000) % 60;
-                long diffHours = diff / (60 * 60 * 1000) % 24;
-                long diffDays = diff / (24 * 60 * 60 * 1000);
+            System.out.print(diffDays + " days, ");
+            System.out.print(diffHours + " hours, ");
+            System.out.print(diffMinutes + " minutes, ");
+            System.out.print(diffSeconds + " seconds.");
 
-                System.out.print(diffDays + " days, ");
-                System.out.print(diffHours + " hours, ");
-                System.out.print(diffMinutes + " minutes, ");
-                System.out.print(diffSeconds + " seconds.");
+        } catch (DateTimeException ex) {
+            System.out.printf("%s can't be formatted!%n", arrivalDate);
+            ex.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-            } catch (DateTimeException ex) {
-                System.out.printf("%s can't be formatted!%n", arrivalDate);
-                ex.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        if (end)
+            ticket.setEndDate(d2);
 
-            if (end)
-                user.getTicket().setEndDate(d2);
-
-            return d2.getTime() - start.getTime();
+        return d2.getTime() - start.getTime();
 
 
     }
