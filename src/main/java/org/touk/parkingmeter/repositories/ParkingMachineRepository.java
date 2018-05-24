@@ -6,4 +6,6 @@ import org.touk.parkingmeter.domain.ParkingMachine;
 
 @Repository
 public interface ParkingMachineRepository extends CrudRepository<ParkingMachine, Long>{
+
+    void findByNearestPoints(Long longitude, Long latitude);
 }
