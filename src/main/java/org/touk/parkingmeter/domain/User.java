@@ -27,8 +27,4 @@ public class User {
     @Transient
     private double parkingFee;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ticket_id")
-    private Ticket ticket;
-
 }

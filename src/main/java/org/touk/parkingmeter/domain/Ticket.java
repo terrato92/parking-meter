@@ -30,6 +30,9 @@ public class Ticket {
     @ManyToOne
     private ParkingMachine parkingMachine;
 
+    @ManyToOne
+    private User user;
+
 
     public void setStartDate(){
         Instant nowTime = Instant.now();
