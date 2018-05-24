@@ -54,7 +54,7 @@ public class IParkingMachineServiceTest {
 
         boolean start = iParkingMachineService.startTime(parkingMachine, user, user.getTicket().getPlate());
 
-        assertEquals(parkingMachine.getUsers().size(), 1);
+        assertEquals(parkingMachine.getTicket().size(), 1);
         assertTrue(start);
     }
 
@@ -66,7 +66,7 @@ public class IParkingMachineServiceTest {
 
         ParkingMachine parkingMachine = new ParkingMachine();
         parkingMachine.setId(2L);
-        parkingMachine.addUser(user);
+        parkingMachine.addTicket(user.getTicket());
         Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
 
         when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
