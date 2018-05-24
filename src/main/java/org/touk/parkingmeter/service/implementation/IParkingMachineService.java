@@ -34,9 +34,9 @@ public class IParkingMachineService implements ParkingMachineService {
     }
 
     @Override
-    public boolean startTime(Long parkingID, Long userId, String plate) {
+    public boolean startTime(Long longitude, Long latitude, Long userId, String plate) {
 
-        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findById(parkingID);
+        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findByNearestPoints(longitude, latitude);
 
         if (!parkingMachineOptional.isPresent()) {
             throw new RuntimeException("Error couldn't find park machine");
