@@ -1,12 +1,13 @@
 package org.touk.parkingmeter.service;
 
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
+import org.touk.parkingmeter.domain.User;
 
 @Service
 public interface CounterService {
 
-    double parkingRates(Long timeAtParking);
-    double currentPrice(Long timeAtParking);
+
+    double parkingRates(User user, Long timeAtParking);
+
+    double currentPrice(User user, Long timeAtParking);
 }

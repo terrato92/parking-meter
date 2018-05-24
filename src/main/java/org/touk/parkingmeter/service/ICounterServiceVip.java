@@ -1,17 +1,17 @@
 package org.touk.parkingmeter.service;
 
-import java.util.Date;
+import org.touk.parkingmeter.domain.User;
 
 public class ICounterServiceVip implements CounterService {
 
-
     @Override
-    public double parkingRates(Long timeAtParking) {
+    public double parkingRates(User user, Long timeAtParking) {
+
         return 0;
     }
 
     @Override
-    public double currentPrice(Long timeAtParking) {
+    public double currentPrice(User user, Long timeAtParking) {
         return 0;
     }
 }
