@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.touk.parkingmeter.domain.ParkingMachine;
-import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
@@ -52,9 +51,10 @@ public class IParkingMachineServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(userOptional);
         when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
 
-        boolean start = iParkingMachineService.startTime(parkingMachine, user, user.getTicket().getPlate());
 
-        assertEquals(parkingMachine.getTicket().size(), 1);
+        boolean start = iParkingMachineService.startTime(parkingMachine.getLongitude(), parkingMachine.getLatitude(), user.getId(), user.getTicket().getPlate());
+
+        assertEquals(parkingMachine.getTickets().size(), 1);
         assertTrue(start);
     }
 
