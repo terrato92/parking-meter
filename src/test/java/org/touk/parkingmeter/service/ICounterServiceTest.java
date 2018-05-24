@@ -45,7 +45,7 @@ public class ICounterServiceTest {
 
         ParkingMachine parkingMachine = new ParkingMachine();
         parkingMachine.setId(2L);
-        parkingMachine.addUser(user);
+        parkingMachine.addTicket(user.getTicket());
         Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
 
         when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
@@ -64,7 +64,7 @@ public class ICounterServiceTest {
         user.setPassword("po");
         user.setVip(false);
 
-        String dateee = "24/05/2018 14:10:25";
+        String dateee = "24/05/2018 16:10:25";
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
