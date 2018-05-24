@@ -9,7 +9,6 @@ import java.time.Instant;
 import java.util.Date;
 
 @Entity
-@Table
 @Data
 public class Ticket {
 
@@ -30,6 +29,11 @@ public class Ticket {
 
 
     public void setStartDate(){
+        Instant nowTime = Instant.now();
+        startDate = Date.from(nowTime);
+    }
+
+    public void endDate(){
         Instant nowTime = Instant.now();
         startDate = Date.from(nowTime);
     }
