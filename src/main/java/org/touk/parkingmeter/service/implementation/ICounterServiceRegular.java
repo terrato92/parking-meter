@@ -33,9 +33,4 @@ public class ICounterServiceRegular implements CounterService {
         }
         return fee;
     }
-
-    @Override
-    public double currentPrice(User user, Long timeAtParking) {
-        return 0;
-    }
 }

@@ -8,6 +8,4 @@ public interface CounterService {
 
 
     double parkingRates(User user, Long timeAtParking);
-
-    double currentPrice(User user, Long timeAtParking);
 }

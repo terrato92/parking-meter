@@ -75,7 +75,7 @@ public class IParkingMachineService implements ParkingMachineService {
             if (user.isVip()) {
 
                 counterService = new ICounterServiceVip();
-                price = counterService.currentPrice(user, timeAtTheParking);
+                price = counterService.parkingRates(user, timeAtTheParking);
             } else if (!user.isVip()) {
 
                 counterService = new ICounterServiceRegular(userRepository);
@@ -112,10 +112,11 @@ public class IParkingMachineService implements ParkingMachineService {
                 client.getTicket().endDate();
                 client.setParkingFee(checkFee(user));
                 client.getTicket().setPlate(null);
+
                 double fee = counterService.parkingRates(user, timeAtTheParking);
+                System.out.println("FEE: " + fee);
 
                 userRepository.save(user);
-                parkingMachineRepository.save(parkingMachine1);
                 return true;
             }
         }
@@ -123,11 +124,8 @@ public class IParkingMachineService implements ParkingMachineService {
 
 
     private Long calculateTimeParking(User user, boolean end) {
-        Optional<User> userOptional = userRepository.findById(user.getId());
 
-        if (userOptional.isPresent()) {
-            User client = userOptional.get();
-            Date start = client.getTicket().getStartDate();
+        Date start = user.getTicket().getStartDate();
             Date d2 = null;
 
             String checking = null;
@@ -139,7 +137,7 @@ public class IParkingMachineService implements ParkingMachineService {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
                 checking = arrivalDate.format(format);
-                System.out.printf("Arriving at :  %s %n", checking);
+                System.out.printf("Arriving at:  %s %n", start);
 
                 d2 = formatter.parse(checking);
 
@@ -164,13 +162,11 @@ public class IParkingMachineService implements ParkingMachineService {
             }
 
             if (end)
-                client.getTicket().setEndDate(d2);
+                user.getTicket().setEndDate(d2);
 
             return d2.getTime() - start.getTime();
 
-        } else {
-            throw new NullPointerException("NULL");
-        }
+
     }
 }
 

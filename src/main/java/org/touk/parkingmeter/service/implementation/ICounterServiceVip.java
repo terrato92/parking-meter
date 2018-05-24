@@ -10,9 +10,4 @@ public class ICounterServiceVip implements CounterService {
 
         return 0;
     }
-
-    @Override
-    public double currentPrice(User user, Long timeAtParking) {
-        return 0;
-    }
 }
