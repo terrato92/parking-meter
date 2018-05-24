@@ -62,22 +62,31 @@ public class IParkingMachineService implements ParkingMachineService {
     @Override
     public double check(User user) {
 
-        Long timeAtTheParking = calculateTimeStop(user);
+        Optional<User> userOptional = Optional.of(user);
 
-        double price = 0;
+        if (userOptional.isPresent()) {
 
-        if (user.isVip()){
+            Long timeAtTheParking = calculateTimeStop(user);
 
-            counterService = new ICounterServiceVip();
-            price = counterService.currentPrice(timeAtTheParking);
-        } else if (!user.isVip()){
+            double price = 0;
 
-            counterService = new ICounterServiceRegular();
-            price = counterService.currentPrice(timeAtTheParking);
+            if (user.isVip()) {
 
+                counterService = new ICounterServiceVip();
+                price = counterService.currentPrice(user, timeAtTheParking);
+            } else if (!user.isVip()) {
+
+                counterService = new ICounterServiceRegular(userRepository);
+                price = counterService.parkingRates(user, timeAtTheParking);
+
+            }
+
+            return price;
+
+        } else {
+            throw new NullPointerException("NULL");
         }
 
-        return price;
     }
 
     @Override
