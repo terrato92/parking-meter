@@ -28,8 +28,6 @@ public class ICounterServiceRegularTest {
     @Mock
     private ParkingMachineRepository parkingMachineRepository;
 
-    CounterService counterService;
-
     IParkingMachineService iParkingMachineService;
 
 
@@ -42,6 +40,20 @@ public class ICounterServiceRegularTest {
 
     @Test
     public void parkingRates() throws ParseException {
+        User user = getUser();
+        Optional<User> userOptional = Optional.of(user);
+
+        ParkingMachine parkingMachine = new ParkingMachine();
+        parkingMachine.setId(2L);
+        parkingMachine.addUser(user);
+        Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
+
+        when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
+        when(userRepository.findById(anyLong())).thenReturn(userOptional);
+
+        double fee = iParkingMachineService.checkFee(user);
+
+        assertEquals(0, Double.compare(2, fee));
     }
 
 
@@ -58,11 +70,9 @@ public class ICounterServiceRegularTest {
 
         Date d = formatter.parse(dateee);
 
-        Ticket ticket = user.getTicket();
-        ticket.setId(1L);
-        ticket.setStartDate(d);
-        ticket.setPlate("lwd2345");
-        user.setTicket(ticket);
+        user.getTicket().setId(1L);
+        user.getTicket().setStartDate(d);
+        user.getTicket().setPlate("lwd2345");
 
         return user;
     }
