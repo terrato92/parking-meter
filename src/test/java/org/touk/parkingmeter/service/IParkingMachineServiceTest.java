@@ -72,9 +72,8 @@ public class IParkingMachineServiceTest {
         when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
         when(userRepository.findById(anyLong())).thenReturn(userOptional);
 
-
-        iParkingMachineService.endTime(parkingMachine, user);
-
+        assertTrue(iParkingMachineService.endTime(parkingMachine, user));
+        assertNotNull(user.getTicket().getEndDate());
     }
 
     private User getUser() throws ParseException {
