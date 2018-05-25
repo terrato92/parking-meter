@@ -9,13 +9,9 @@ import org.touk.parkingmeter.repositories.TicketRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
 import org.touk.parkingmeter.service.CounterService;
 import org.touk.parkingmeter.service.ParkingMachineService;
+import org.touk.parkingmeter.service.TimeService;
+import org.touk.parkingmeter.service.UserService;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Optional;
 
 public class IParkingMachineService implements ParkingMachineService {
@@ -29,13 +25,19 @@ public class IParkingMachineService implements ParkingMachineService {
     @Autowired
     private final ParkingMachineRepository parkingMachineRepository;
 
+    private TimeService timeService;
+
     private CounterService counterService;
+
+    private UserService userService;
 
 
     public IParkingMachineService(UserRepository userRepository, TicketRepository ticketRepository, ParkingMachineRepository parkingMachineRepository) {
         this.userRepository = userRepository;
         this.ticketRepository = ticketRepository;
         this.parkingMachineRepository = parkingMachineRepository;
+        timeService = new ITimeService();
+
     }
 
     @Override
@@ -68,36 +70,6 @@ public class IParkingMachineService implements ParkingMachineService {
     }
 
     @Override
-    public double checkFee(Long ticketId) {
-
-        Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
-
-        if (ticketOptional.isPresent()) {
-            Ticket ticket = ticketOptional.get();
-
-            Long timeAtTheParking = calculateTimeParking(ticket, false);
-            User user = ticket.getUser();
-            double price = 0;
-
-
-            if (user.isVip()) {
-
-                counterService = new ICounterServiceVip();
-                price = counterService.parkingRates(timeAtTheParking);
-            } else if (!user.isVip()) {
-
-                counterService = new ICounterServiceRegular();
-                price = counterService.parkingRates(timeAtTheParking);
-            }
-
-            return price;
-
-        } else {
-            throw new RuntimeException("Couldn't find park machine.");
-        }
-    }
-
-    @Override
     public double endTime(Long ticketId) {
 
         Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
@@ -107,65 +79,25 @@ public class IParkingMachineService implements ParkingMachineService {
         } else {
             Ticket ticket = ticketOptional.get();
             ticket.setEndDate();
-            ticket.setPlate(null);
 
-            User user = ticket.getUser();
-            user.setParkingFee(checkFee(ticketId));
-
-            Long timeAtTheParking = calculateTimeParking(ticket, true);
+            Long timeAtTheParking = timeService.calculateTimeService(ticket, true);
+            if (ticket.getUser().isVip()){
+                counterService = new ICounterServiceVip();
+            } else {
+                counterService = new ICounterServiceRegular();
+            }
 
             double fee = counterService.parkingRates(timeAtTheParking);
+
             System.out.println("FEE: " + fee);
+
+            User user = ticket.getUser();
+            user.setParkingFee(fee);
 
             return fee;
         }
     }
 
-    private Long calculateTimeParking(Ticket ticket, boolean end) {
-
-        Date start = ticket.getStartDate();
-        Date d2 = null;
-
-        String checking = null;
-
-        LocalDateTime arrivalDate = LocalDateTime.now();
-        try {
-
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
-            checking = arrivalDate.format(format);
-            System.out.printf("Arriving at:  %s %n", start);
-
-            d2 = formatter.parse(checking);
-
-            //in milliseconds
-            long diff = d2.getTime() - start.getTime();
-
-            long diffSeconds = diff / 1000 % 60;
-            long diffMinutes = diff / (60 * 1000) % 60;
-            long diffHours = diff / (60 * 60 * 1000) % 24;
-            long diffDays = diff / (24 * 60 * 60 * 1000);
-
-            System.out.print(diffDays + " days, ");
-            System.out.print(diffHours + " hours, ");
-            System.out.print(diffMinutes + " minutes, ");
-            System.out.print(diffSeconds + " seconds.");
-
-        } catch (DateTimeException ex) {
-            System.out.printf("%s can't be formatted!%n", arrivalDate);
-            ex.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        if (end)
-            ticket.setEndDate(d2);
-
-        return d2.getTime() - start.getTime();
-
-
-    }
 }
 
 
