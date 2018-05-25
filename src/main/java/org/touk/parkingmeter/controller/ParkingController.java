@@ -18,6 +18,7 @@ public class ParkingController {
     private final ParkingMachineService parkingMachineService;
     private final UserService userService;
 
+    @Autowired
     public ParkingController(
             ParkingMachineService parkingMachineService,
             UserService userService) {
