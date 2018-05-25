@@ -43,7 +43,7 @@ public class IParkingMachineService implements ParkingMachineService {
     @Override
     public Ticket createTicket(Long longitude, Long latitude, Long userId, String plate) {
 
-        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findParkingMachineByPoints(longitude, latitude);
+        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findByLongitudeAndLatitude(longitude, latitude);
 
         if (!parkingMachineOptional.isPresent()) {
             throw new RuntimeException("Error couldn't find park machine");

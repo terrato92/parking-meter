@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ParkingMachineRepository extends CrudRepository<ParkingMachine, Long>{
 
-    Optional<ParkingMachine> findParkingMachineByPoints(Long longitude, Long latitude);
+    Optional<ParkingMachine> findByLongitudeAndLatitude(Long longitude, Long latitude);
 }

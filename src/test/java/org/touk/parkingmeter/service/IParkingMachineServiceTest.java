@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -56,7 +55,7 @@ public class IParkingMachineServiceTest {
         Optional<User> userOptional = Optional.of(user);
         Optional<Ticket> ticketOptional = Optional.of(ticket);
 
-        when(parkingMachineRepository.findParkingMachineByPoints(anyLong(), anyLong())).thenReturn(parkingMachineOptional);
+        when(parkingMachineRepository.findByLongitudeAndLatitude(anyLong(), anyLong())).thenReturn(parkingMachineOptional);
         when(userRepository.findById(anyLong())).thenReturn(userOptional);
         when(ticketRepository.findById(anyLong())).thenReturn(ticketOptional);
 
@@ -81,7 +80,7 @@ public class IParkingMachineServiceTest {
         Optional<User> userOptional = Optional.of(user);
         Optional<Ticket> ticketOptional = Optional.of(ticket);
 
-        when(parkingMachineRepository.findParkingMachineByPoints(anyLong(), anyLong())).thenReturn(parkingMachineOptional);
+        when(parkingMachineRepository.findByLongitudeAndLatitude(anyLong(), anyLong())).thenReturn(parkingMachineOptional);
         when(userRepository.findById(anyLong())).thenReturn(userOptional);
         when(ticketRepository.findById(anyLong())).thenReturn(ticketOptional);
 
