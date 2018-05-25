@@ -13,7 +13,7 @@ import java.util.Date;
 public class ITimeService implements TimeService {
 
     @Override
-    public Long calculateTimeService(Ticket ticket, boolean end) {
+    public Long calculateTimeService(Ticket ticket, boolean flag) {
 
         Date start = ticket.getStartDate();
         Date d2 = null;
@@ -43,6 +43,7 @@ public class ITimeService implements TimeService {
             System.out.print(diffHours + " hours, ");
             System.out.print(diffMinutes + " minutes, ");
             System.out.print(diffSeconds + " seconds.");
+            System.out.println("\nActual time: " + d2);
 
         } catch (DateTimeException ex) {
             System.out.printf("%s can't be formatted!%n", arrivalDate);
@@ -51,7 +52,7 @@ public class ITimeService implements TimeService {
             e.printStackTrace();
         }
 
-        if (end)
+        if (flag)
             ticket.setEndDate(d2);
 
         return d2.getTime() - start.getTime();
