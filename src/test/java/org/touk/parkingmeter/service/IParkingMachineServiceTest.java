@@ -13,6 +13,8 @@ import org.touk.parkingmeter.repositories.UserRepository;
 import org.touk.parkingmeter.service.implementation.IParkingMachineService;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -62,13 +64,40 @@ public class IParkingMachineServiceTest {
 
         assertNotNull(newTicket.getStartDate());
         assertEquals(parkingMachine.getTickets().size(), 1);
+    }
+
+    @Test
+    public void endTime() throws ParseException {
+        String dateee = "25/05/2018 00:10:25";
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        Date d = formatter.parse(dateee);
+
+
+        ParkingMachine parkingMachine = getParkingMachine();
+        User user = getUser();
+        Ticket ticket = getTicket(parkingMachine, user);
+        ticket.setStartDate(d);
+
+        Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
+        Optional<User> userOptional = Optional.of(user);
+        Optional<Ticket> ticketOptional = Optional.of(ticket);
+
+        when(parkingMachineRepository.findParkingMachineByPoints(anyLong(), anyLong())).thenReturn(parkingMachineOptional);
+        when(userRepository.findById(anyLong())).thenReturn(userOptional);
+        when(ticketRepository.findById(anyLong())).thenReturn(ticketOptional);
+
+        double toPay = iParkingMachineService.endTime(ticket.getId());
+
+        System.out.println(toPay);
 
     }
 
     private User getUser() {
         User user = new User();
         user.setId(5L);
-        user.setVip(true);
+        user.setVip(false);
         user.setPassword("asd");
         user.setEmail("zxc");
         return user;
