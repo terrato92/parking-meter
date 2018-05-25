@@ -1,10 +1,12 @@
 package org.touk.parkingmeter.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.UserRepository;
 import org.touk.parkingmeter.service.CounterService;
 
+@Service
 public class ICounterServiceVip implements CounterService {
 
     @Override

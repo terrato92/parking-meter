@@ -1,6 +1,7 @@
 package org.touk.parkingmeter.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.TicketRepository;
@@ -10,6 +11,7 @@ import org.touk.parkingmeter.service.UserService;
 
 import java.util.Optional;
 
+@Service
 public class IUserService implements UserService {
 
     @Autowired
@@ -33,7 +35,7 @@ public class IUserService implements UserService {
         if (ticketOptional.isPresent()) {
             Ticket ticket = ticketOptional.get();
 
-            Long timeAtTheParking = timeService.calculateTimeService(ticket, false);
+            Long timeAtTheParking = timeService.calculateTimeService(ticket);
             User user = ticket.getUser();
             double price = 0;
 

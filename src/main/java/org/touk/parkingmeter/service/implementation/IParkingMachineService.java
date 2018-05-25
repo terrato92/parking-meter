@@ -1,6 +1,7 @@
 package org.touk.parkingmeter.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
@@ -10,10 +11,9 @@ import org.touk.parkingmeter.repositories.UserRepository;
 import org.touk.parkingmeter.service.CounterService;
 import org.touk.parkingmeter.service.ParkingMachineService;
 import org.touk.parkingmeter.service.TimeService;
-import org.touk.parkingmeter.service.UserService;
-
 import java.util.Optional;
 
+@Service
 public class IParkingMachineService implements ParkingMachineService {
 
     @Autowired
@@ -29,7 +29,6 @@ public class IParkingMachineService implements ParkingMachineService {
 
     private CounterService counterService;
 
-    private UserService userService;
 
 
     public IParkingMachineService(UserRepository userRepository, TicketRepository ticketRepository, ParkingMachineRepository parkingMachineRepository) {
@@ -80,7 +79,7 @@ public class IParkingMachineService implements ParkingMachineService {
             Ticket ticket = ticketOptional.get();
             ticket.setEndDate();
 
-            Long timeAtTheParking = timeService.calculateTimeService(ticket, true);
+            Long timeAtTheParking = timeService.calculateTimeService(ticket);
             if (ticket.getUser().isVip()){
                 counterService = new ICounterServiceVip();
             } else {

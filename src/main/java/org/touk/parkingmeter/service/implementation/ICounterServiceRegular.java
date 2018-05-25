@@ -1,8 +1,10 @@
 package org.touk.parkingmeter.service.implementation;
 
 
+import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.service.CounterService;
 
+@Service
 public class ICounterServiceRegular implements CounterService {
 
     @Override

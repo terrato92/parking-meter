@@ -15,26 +15,13 @@ import org.touk.parkingmeter.service.UserService;
 @RestController
 public class ParkingController {
 
+    private final ParkingMachineService parkingMachineService;
+    private final UserService userService;
 
-    private final ParkingMachineRepository parkingMachineRepository;
-    private final TicketRepository ticketRepository;
-    private final UserRepository userRepository;
+    public ParkingController(
+            ParkingMachineService parkingMachineService,
+            UserService userService) {
 
-    @Autowired
-    private ParkingMachineService parkingMachineService;
-
-    private UserService userService;
-
-    @Autowired
-    public ParkingController(ParkingMachineRepository parkingMachineRepository,
-                             TicketRepository ticketRepository,
-                             UserRepository userRepository,
-                             ParkingMachineService parkingMachineService,
-                             UserService userService) {
-
-        this.parkingMachineRepository = parkingMachineRepository;
-        this.ticketRepository = ticketRepository;
-        this.userRepository = userRepository;
         this.parkingMachineService = parkingMachineService;
         this.userService = userService;
     }
@@ -52,7 +39,7 @@ public class ParkingController {
     }
 
     @PutMapping("ticket/{longId}")
-    public ResponseEntity<Ticket> closeTicket(@PathVariable Long ticketId){
+    public ResponseEntity<Ticket> closeTicket(@PathVariable Long ticketId) {
 
         Ticket ticket = parkingMachineService.endTicket(ticketId);
 
@@ -60,7 +47,7 @@ public class ParkingController {
     }
 
     @GetMapping("ticket/{longId}")
-    public ResponseEntity<Double> checkFee(@PathVariable Long ticketId){
+    public ResponseEntity<Double> checkFee(@PathVariable Long ticketId) {
         Double fee = userService.checkFee(ticketId);
 
         return new ResponseEntity<>(fee, HttpStatus.OK);

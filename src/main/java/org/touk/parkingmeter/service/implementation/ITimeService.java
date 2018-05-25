@@ -1,5 +1,6 @@
 package org.touk.parkingmeter.service.implementation;
 
+import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.service.TimeService;
 
@@ -10,10 +11,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+@Service
 public class ITimeService implements TimeService {
 
     @Override
-    public Long calculateTimeService(Ticket ticket, boolean flag) {
+    public Long calculateTimeService(Ticket ticket) {
 
         Date start = ticket.getStartDate();
         Date d2 = null;
@@ -52,11 +54,6 @@ public class ITimeService implements TimeService {
             e.printStackTrace();
         }
 
-        if (flag)
-            ticket.setEndDate(d2);
-
         return d2.getTime() - start.getTime();
-
-
     }
 }
