@@ -6,5 +6,5 @@ public interface ParkingMachineService {
 
     Ticket createTicket(Long longitude, Long latitude, Long userId, String plate);
 
-    double endTime(Long ticketId);
+    Ticket endTicket(Long ticketId);
 }

@@ -70,7 +70,7 @@ public class IParkingMachineService implements ParkingMachineService {
     }
 
     @Override
-    public double endTime(Long ticketId) {
+    public Ticket endTicket(Long ticketId) {
 
         Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
 
@@ -94,7 +94,7 @@ public class IParkingMachineService implements ParkingMachineService {
             User user = ticket.getUser();
             user.setParkingFee(fee);
 
-            return fee;
+            return ticket;
         }
     }
 
