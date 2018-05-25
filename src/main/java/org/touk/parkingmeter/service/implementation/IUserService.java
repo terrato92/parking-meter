@@ -1,6 +1,7 @@
 package org.touk.parkingmeter.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
@@ -14,14 +15,15 @@ import java.util.Optional;
 @Service
 public class IUserService implements UserService {
 
-    @Autowired
     private final TicketRepository ticketRepository;
 
     private CounterService counterService;
 
     private TimeService timeService;
 
-    public IUserService(TicketRepository ticketRepository, CounterService counterService) {
+
+    @Autowired
+    public IUserService(TicketRepository ticketRepository,@Qualifier("regular") CounterService counterService) {
         this.ticketRepository = ticketRepository;
         this.counterService = counterService;
         timeService = new ITimeService();
