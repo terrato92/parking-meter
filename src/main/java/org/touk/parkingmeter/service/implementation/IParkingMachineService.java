@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
+import org.touk.parkingmeter.exception.ParkingNotFoundException;
+import org.touk.parkingmeter.exception.TicketNotFoundException;
+import org.touk.parkingmeter.exception.UserNotFoundException;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.TicketRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
@@ -45,13 +48,13 @@ public class IParkingMachineService implements ParkingMachineService {
         Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findByLongitudeAndLatitude(longitude, latitude);
 
         if (!parkingMachineOptional.isPresent()) {
-            throw new RuntimeException("Error couldn't find park machine");
+            throw new ParkingNotFoundException("Error couldn't find park machine");
         } else {
 
             Optional<User> userOptional = userRepository.findById(userId);
 
             if (!userOptional.isPresent()) {
-                throw new RuntimeException("Error couldn't find user.");
+                throw new UserNotFoundException("Error couldn't find user.");
             } else {
 
                 ParkingMachine parkingMachine = parkingMachineOptional.get();
@@ -74,7 +77,7 @@ public class IParkingMachineService implements ParkingMachineService {
         Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
 
         if (!ticketOptional.isPresent()) {
-            throw new RuntimeException("Couldn't find park machine");
+            throw new TicketNotFoundException("Couldn't find park machine");
         } else {
             Ticket ticket = ticketOptional.get();
             ticket.setEndDate();

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
+import org.touk.parkingmeter.exception.ParkingNotFoundException;
 import org.touk.parkingmeter.repositories.TicketRepository;
 import org.touk.parkingmeter.service.CounterService;
 import org.touk.parkingmeter.service.TimeService;
@@ -55,7 +56,7 @@ public class IUserService implements UserService {
             return price;
 
         } else {
-            throw new RuntimeException("Couldn't find park machine.");
+            throw new ParkingNotFoundException("Couldn't find park machine.");
         }
     }
 
