@@ -69,11 +69,8 @@ public class IParkingMachineServiceTest {
     @Test
     public void endTime() throws ParseException {
         String dateee = "25/05/2018 00:10:25";
-
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
         Date d = formatter.parse(dateee);
-
 
         ParkingMachine parkingMachine = getParkingMachine();
         User user = getUser();
@@ -119,42 +116,4 @@ public class IParkingMachineServiceTest {
         parkingMachine.setLongitude(123L);
         return parkingMachine;
     }
-
-
-//    @Test
-//    public void endTime() throws ParseException {
-//        User user = getUser();
-//        Optional<User> userOptional = Optional.of(user);
-//
-//        ParkingMachine parkingMachine = new ParkingMachine();
-//        parkingMachine.setId(2L);
-//        parkingMachine.addTicket(user.getTicket());
-//        Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
-//
-//        when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
-//        when(userRepository.findById(anyLong())).thenReturn(userOptional);
-//
-//        assertTrue(iParkingMachineService.endTime(parkingMachine, user));
-//        assertNotNull(user.getTicket().getEndDate());
-//    }
-//
-//    private User getUser() throws ParseException {
-//        User user = new User();
-//        user.setId(1L);
-//        user.setEmail("okm@nj.pl");
-//        user.setPassword("po");
-//        user.setVip(false);
-//
-//        String dateee = "24/05/2018 16:10:25";
-//
-//        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-//
-//        Date d = formatter.parse(dateee);
-//
-//        user.getTicket().setId(1L);
-//        user.getTicket().setStartDate(d);
-//        user.getTicket().setPlate("lwd2345");
-//
-//        return user;
-//    }
 }
