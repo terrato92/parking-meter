@@ -84,9 +84,9 @@ public class IParkingMachineServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(userOptional);
         when(ticketRepository.findById(anyLong())).thenReturn(ticketOptional);
 
-        double toPay = iParkingMachineService.endTime(ticket.getId());
+        Ticket payTicket = iParkingMachineService.endTicket(ticket.getId());
 
-        System.out.println(toPay);
+        assertNotNull(payTicket.getEndDate());
 
     }
 
