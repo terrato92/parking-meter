@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @Entity
+@Table
 @Data
 public class Ticket {
 
@@ -18,7 +19,6 @@ public class Ticket {
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @CreatedDate
-    @NotNull
     private Date startDate;
 
     @Temporal(value = TemporalType.TIMESTAMP)
