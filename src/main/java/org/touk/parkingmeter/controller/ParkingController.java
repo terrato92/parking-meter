@@ -47,7 +47,7 @@ public class ParkingController {
         return new ResponseEntity<Ticket>(ticket, HttpStatus.OK);
     }
 
-    @GetMapping("ticket/{longId}")
+    @GetMapping("ticket/{ticketId}")
     public ResponseEntity<Double> checkFee(@PathVariable Long ticketId) {
         Double fee = userService.checkFee(ticketId);
 
