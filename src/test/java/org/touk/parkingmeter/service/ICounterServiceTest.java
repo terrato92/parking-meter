@@ -44,23 +44,6 @@ public class ICounterServiceTest {
     @Test
     public void parkingRates() throws ParseException {
 
-
-
-
-//        User user = getUser();
-//        Optional<User> userOptional = Optional.of(user);
-//
-//        ParkingMachine parkingMachine = new ParkingMachine();
-//        parkingMachine.setId(2L);
-//        parkingMachine.addTicket(user.getTicket());
-//        Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
-//
-//        when(parkingMachineRepository.findById(anyLong())).thenReturn(parkingMachineOptional);
-//        when(userRepository.findById(anyLong())).thenReturn(userOptional);
-//
-//        double fee = iParkingMachineService.checkFee(user);
-//
-//        assertEquals(0, Double.compare(2, fee));
     }
 
 
