@@ -57,12 +57,14 @@ public class IParkingMachineService implements ParkingMachineService {
                 throw new UserNotFoundException("Error couldn't find user.");
             } else {
 
+                User user = userOptional.get();
                 ParkingMachine parkingMachine = parkingMachineOptional.get();
 
                 Ticket ticket = new Ticket();
                 ticket.setPlate(plate);
                 ticket.setStartDate();
                 ticket.setParkingMachine(parkingMachine);
+                ticket.setUser(user);
 
                 ticketRepository.save(ticket);
 

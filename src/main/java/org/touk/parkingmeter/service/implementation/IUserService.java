@@ -44,7 +44,6 @@ public class IUserService implements UserService {
 
 
             if (user.isVip()) {
-
                 counterService = new ICounterServiceVip();
                 price = counterService.parkingRates(timeAtTheParking);
             } else if (!user.isVip()) {
