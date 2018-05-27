@@ -5,5 +5,5 @@ CREATE TABLE IF NOT EXISTS ticket (id int NOT NULL AUTO_INCREMENT, start_date TI
 
 
 INSERT INTO `parking_machine` (`id`, `longitude`, `latitude`) VALUES (1, 123, 789);
-INSERT INTO `user` (`id`, `email`, `password`, `vip`) VALUES (1, 'asd@bp.pl', 'qwer', TRUE);
+INSERT INTO `user` (`id`, `email`, `password`, `vip`) VALUES (1, 'asd@bp.pl', 'qwer', FALSE);
 INSERT INTO `ticket` (`id`, `start_date`, `plate`, `user_id`) VALUES (1, CURRENT_TIMESTAMP, 'lwwl34r4', 1);
