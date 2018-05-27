@@ -18,11 +18,10 @@ public class Ticket {
     private Long id;
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    @CreatedDate
+    @Column(name = "start_date")
     private Date startDate;
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    @CreatedDate
     private Date endDate;
 
     private String plate;
@@ -33,14 +32,13 @@ public class Ticket {
     @ManyToOne
     private User user;
 
-    public void setStartDate(){
+    public void setStartDate() {
         Instant nowTime = Instant.now();
         startDate = Date.from(nowTime);
     }
 
-    public void setEndDate(){
+    public void setEndDate() {
         Instant nowTime = Instant.now();
         endDate = Date.from(nowTime);
     }
-
 }
