@@ -36,7 +36,7 @@ public class ParkingController {
         return new ResponseEntity<Ticket>(ticket, HttpStatus.CREATED);
     }
 
-    @PutMapping("ticket/{longId}")
+    @PutMapping("ticket/{ticketId}")
     public ResponseEntity<Ticket> closeTicket(@PathVariable Long ticketId) {
 
         Ticket ticket = parkingMachineService.endTicket(ticketId);
