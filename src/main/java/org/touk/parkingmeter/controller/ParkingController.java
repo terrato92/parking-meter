@@ -6,9 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.touk.parkingmeter.domain.Ticket;
-import org.touk.parkingmeter.repositories.ParkingMachineRepository;
-import org.touk.parkingmeter.repositories.TicketRepository;
-import org.touk.parkingmeter.repositories.UserRepository;
 import org.touk.parkingmeter.service.ParkingMachineService;
 import org.touk.parkingmeter.service.UserService;
 
