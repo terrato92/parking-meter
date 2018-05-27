@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS ticket (id int NOT NULL AUTO_INCREMENT, startDate TIM
 
 INSERT INTO `parking_machine` (`id`, `longitude`, `latitude`) VALUES (1, 123, 789);
 INSERT INTO `user` (`id`, `email`, `password`, `vip`) VALUES (1, 'asd@bp.pl', 'qwer', TRUE);
-INSERT INTO `ticket` (`id`, `startDate`, `plate`) VALUES (1, to_TIMESTAMP('26/05/2018 00:10:25', 'dd/MM/yyyy HH:mm:ss'), 'lwwl34r4');
+INSERT INTO `ticket` (`id`, `startDate`, `plate`) VALUES (1, to_timestamp('26/05/2018 00:10:25', 'dd/MM/yyyy HH:mm:ss'), 'lwwl34r4');
