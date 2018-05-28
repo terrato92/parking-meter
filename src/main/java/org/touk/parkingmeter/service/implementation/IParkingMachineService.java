@@ -5,15 +5,14 @@ import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
-import org.touk.parkingmeter.exception.ParkingNotFoundException;
-import org.touk.parkingmeter.exception.TicketNotFoundException;
-import org.touk.parkingmeter.exception.UserNotFoundException;
+import org.touk.parkingmeter.exception.ResourceNotFoundException;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.TicketRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
 import org.touk.parkingmeter.service.CounterService;
 import org.touk.parkingmeter.service.ParkingMachineService;
 import org.touk.parkingmeter.service.TimeService;
+
 import java.util.Optional;
 
 @Service
@@ -48,13 +47,13 @@ public class IParkingMachineService implements ParkingMachineService {
         Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findByLongitudeAndLatitude(longitude, latitude);
 
         if (!parkingMachineOptional.isPresent()) {
-            throw new ParkingNotFoundException("Error couldn't find park machine");
+            throw new ResourceNotFoundException();
         } else {
 
             Optional<User> userOptional = userRepository.findById(userId);
 
             if (!userOptional.isPresent()) {
-                throw new UserNotFoundException("Error couldn't find user.");
+                throw new ResourceNotFoundException();
             } else {
 
                 User user = userOptional.get();
@@ -79,7 +78,7 @@ public class IParkingMachineService implements ParkingMachineService {
         Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
 
         if (!ticketOptional.isPresent()) {
-            throw new TicketNotFoundException("Couldn't find park machine");
+            throw new ResourceNotFoundException();
         } else {
             Ticket ticket = ticketOptional.get();
             ticket.setEndDate();
