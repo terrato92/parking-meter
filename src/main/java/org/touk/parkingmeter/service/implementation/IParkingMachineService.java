@@ -2,9 +2,11 @@ package org.touk.parkingmeter.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.touk.parkingmeter.domain.Currency;
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
+import org.touk.parkingmeter.dto.DataDto;
 import org.touk.parkingmeter.exception.ResourceNotFoundException;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.TicketRepository;
@@ -13,6 +15,7 @@ import org.touk.parkingmeter.service.CounterService;
 import org.touk.parkingmeter.service.ParkingMachineService;
 import org.touk.parkingmeter.service.TimeService;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -42,15 +45,14 @@ public class IParkingMachineService implements ParkingMachineService {
     }
 
     @Override
-    public Ticket createTicket(Long longitude, Long latitude, Long userId, String plate) {
-
-        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findByLongitudeAndLatitude(longitude, latitude);
+    public Ticket createTicket(DataDto dataDto) {
+        Optional<ParkingMachine> parkingMachineOptional = parkingMachineRepository.findByLongitudeAndLatitude(dataDto.getLongitude(), dataDto.getLatitude());
 
         if (!parkingMachineOptional.isPresent()) {
             throw new ResourceNotFoundException();
         } else {
 
-            Optional<User> userOptional = userRepository.findById(userId);
+            Optional<User> userOptional = userRepository.findById(dataDto.getUserId());
 
             if (!userOptional.isPresent()) {
                 throw new ResourceNotFoundException();
@@ -60,10 +62,11 @@ public class IParkingMachineService implements ParkingMachineService {
                 ParkingMachine parkingMachine = parkingMachineOptional.get();
 
                 Ticket ticket = new Ticket();
-                ticket.setPlate(plate);
+                ticket.setPlate(dataDto.getPlate());
                 ticket.setStartDate();
                 ticket.setParkingMachine(parkingMachine);
                 ticket.setUser(user);
+                ticket.setCurrency(Currency.PLN);
 
                 ticketRepository.save(ticket);
 
@@ -83,6 +86,8 @@ public class IParkingMachineService implements ParkingMachineService {
             Ticket ticket = ticketOptional.get();
             ticket.setEndDate();
 
+            ticketRepository.save(ticket);
+
             Long timeAtTheParking = timeService.calculateTimeService(ticket);
             if (ticket.getUser().isVip()){
                 counterService = new ICounterServiceVip();
@@ -90,12 +95,13 @@ public class IParkingMachineService implements ParkingMachineService {
                 counterService = new ICounterServiceRegular();
             }
 
-            double fee = counterService.parkingRates(timeAtTheParking);
+            BigDecimal fee = counterService.parkingRates(timeAtTheParking);
 
             System.out.println("FEE: " + fee);
 
             User user = ticket.getUser();
             user.setParkingFee(fee);
+
 
             return ticket;
         }

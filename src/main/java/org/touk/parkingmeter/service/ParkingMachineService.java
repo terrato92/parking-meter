@@ -2,11 +2,13 @@ package org.touk.parkingmeter.service;
 
 import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.Ticket;
+import org.touk.parkingmeter.dto.DataDto;
 
 @Service
 public interface ParkingMachineService {
 
-    Ticket createTicket(Long longitude, Long latitude, Long userId, String plate);
+
+    Ticket createTicket(DataDto dataDto);
 
     Ticket endTicket(Long ticketId);
 }
