@@ -1,3 +1,3 @@
 !/bin/bash
 clear
-java -jar parking-meter-0.0.1-SNAPSHOT.jar
+java -jar /home/kamil/parking-meter/build/libs/parking-meter-0.0.1-SNAPSHOT.jar
