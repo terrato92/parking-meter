@@ -1,10 +1,8 @@
 package org.touk.parkingmeter.domain;
 
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Date;
 
@@ -31,6 +29,9 @@ public class Ticket {
 
     @ManyToOne
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     public void setStartDate() {
         Instant nowTime = Instant.now();
