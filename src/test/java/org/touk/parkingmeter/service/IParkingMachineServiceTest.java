@@ -7,6 +7,8 @@ import org.mockito.MockitoAnnotations;
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
+import org.touk.parkingmeter.dto.ConvertToDto;
+import org.touk.parkingmeter.dto.DataDto;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.TicketRepository;
 import org.touk.parkingmeter.repositories.UserRepository;
@@ -17,12 +19,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 public class IParkingMachineServiceTest {
-
     @Mock
     private UserRepository userRepository;
 
@@ -34,12 +35,16 @@ public class IParkingMachineServiceTest {
 
     private IParkingMachineService iParkingMachineService;
 
+    @Mock
+    private ConvertToDto convertToDto;
+
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         iParkingMachineService = new IParkingMachineService(userRepository, ticketRepository, parkingMachineRepository);
+        convertToDto = new ConvertToDto();
     }
 
 
@@ -49,20 +54,19 @@ public class IParkingMachineServiceTest {
         User user = getUser();
         Ticket ticket = getTicket(parkingMachine, user);
 
-        parkingMachine.addTicket(ticket); // check debbugiem
-
         Optional<ParkingMachine> parkingMachineOptional = Optional.of(parkingMachine);
         Optional<User> userOptional = Optional.of(user);
         Optional<Ticket> ticketOptional = Optional.of(ticket);
+
 
         when(parkingMachineRepository.findByLongitudeAndLatitude(anyLong(), anyLong())).thenReturn(parkingMachineOptional);
         when(userRepository.findById(anyLong())).thenReturn(userOptional);
         when(ticketRepository.findById(anyLong())).thenReturn(ticketOptional);
 
-        Ticket newTicket = iParkingMachineService.createTicket(parkingMachine.getLongitude(), parkingMachine.getLatitude(), ticket.getUser().getId(), ticket.getPlate());
+        DataDto dataDto = convertToDto.convertToDto(parkingMachine, user, ticket);
+        Ticket newTicket = iParkingMachineService.createTicket(dataDto);
 
         assertNotNull(newTicket.getStartDate());
-        assertEquals(parkingMachine.getTickets().size(), 1);
     }
 
     @Test
