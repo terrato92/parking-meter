@@ -1,8 +1,8 @@
 package org.touk.parkingmeter.service;
 
-import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 
 public interface UserService {
 
-    double checkFee(Long ticketId);
+    BigDecimal checkFee(Long ticketId);
 }

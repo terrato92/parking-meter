@@ -11,6 +11,7 @@ import org.touk.parkingmeter.service.CounterService;
 import org.touk.parkingmeter.service.TimeService;
 import org.touk.parkingmeter.service.UserService;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -31,7 +32,7 @@ public class IUserService implements UserService {
     }
 
     @Override
-    public double checkFee(Long ticketId) {
+    public BigDecimal checkFee(Long ticketId) {
 
         Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
 
@@ -40,8 +41,7 @@ public class IUserService implements UserService {
 
             Long timeAtTheParking = timeService.calculateTimeService(ticket);
             User user = ticket.getUser();
-            double price = 0;
-
+            BigDecimal price = new BigDecimal(0);
 
             if (user.isVip()) {
                 counterService = new ICounterServiceVip();
@@ -58,5 +58,4 @@ public class IUserService implements UserService {
             throw new ResourceNotFoundException();
         }
     }
-
 }
