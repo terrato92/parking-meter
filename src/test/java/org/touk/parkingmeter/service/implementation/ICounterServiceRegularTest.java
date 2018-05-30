@@ -28,6 +28,6 @@ public class ICounterServiceRegularTest {
 
         BigDecimal fee = counterService.parkingRates(time);
 
-        assertEquals(0, Double.compare(fee.doubleValue(), 7.5));
+        assertEquals(0, Double.compare(fee.doubleValue(), 6));
     }
 }
