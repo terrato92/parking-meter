@@ -1,17 +1,15 @@
-package org.touk.parkingmeter.dto;
+package org.touk.parkingmeter.converter;
 
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
+import org.touk.parkingmeter.dto.DataDto;
 
-/**
- * Created by onenight on 2018-05-29.
- */
 public class ConvertToDto {
 
     public DataDto convertToDto(ParkingMachine parkingMachine,
-                                 User user,
-                                 Ticket ticket) {
+                                User user,
+                                Ticket ticket) {
 
         DataDto dataDto = new DataDto();
         dataDto.setLatitude(parkingMachine.getLatitude());
