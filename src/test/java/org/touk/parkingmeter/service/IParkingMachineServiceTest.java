@@ -7,7 +7,7 @@ import org.mockito.MockitoAnnotations;
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
-import org.touk.parkingmeter.dto.ConvertToDto;
+import org.touk.parkingmeter.converter.ConvertToDto;
 import org.touk.parkingmeter.dto.DataDto;
 import org.touk.parkingmeter.repositories.ParkingMachineRepository;
 import org.touk.parkingmeter.repositories.TicketRepository;
