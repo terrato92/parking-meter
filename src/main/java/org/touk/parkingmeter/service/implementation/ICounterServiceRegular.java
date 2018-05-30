@@ -4,25 +4,31 @@ package org.touk.parkingmeter.service.implementation;
 import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.service.CounterService;
 
+import java.math.BigDecimal;
+import java.util.concurrent.TimeUnit;
+
 @Service("regular")
 public class ICounterServiceRegular implements CounterService {
 
     @Override
-    public double parkingRates(Long timeAtParking) {
+    public BigDecimal parkingRates(Long timeAtParking) {
 
-        long diffHours = timeAtParking / (60 * 60 * 1000) % 24;
-        double fee = 0;
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeAtParking);
 
-        if (diffHours <= 1) {
-            fee = 1;
-        } else if (1 < diffHours && diffHours <= 2) {
-            fee= 2;
-        } else if (2 < diffHours) {
+        BigDecimal fee = new BigDecimal("0");
 
-            for (int i = 2; i < diffHours; i++) {
-                fee = i * 1.5;
-            }
+        if (minutes <= 60) {
+            fee = new BigDecimal("1");
         }
+
+        if (60 < minutes && minutes <= 120) {
+            fee = fee.add(new BigDecimal(1));
+        }
+
+        if (minutes > 120) {
+            fee = fee.add(BigDecimal.valueOf(minutes - 120)).multiply(BigDecimal.valueOf(1.5));
+        }
+
         return fee;
     }
 }

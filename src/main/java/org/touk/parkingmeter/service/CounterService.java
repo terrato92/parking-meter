@@ -1,8 +1,9 @@
 package org.touk.parkingmeter.service;
 
 
+import java.math.BigDecimal;
 
 public interface CounterService {
 
-    double parkingRates(Long timeAtParking);
+    BigDecimal parkingRates(Long timeAtParking);
 }
