@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS parking_machine (id int NOT NULL AUTO_INCREMENT, longitude int, latitude int, PRIMARY KEY (`id`));
 CREATE TABLE IF NOT EXISTS user (id int NOT NULL AUTO_INCREMENT, email varchar(100), password varchar(100), vip BOOL, PRIMARY KEY (`id`));
-CREATE TABLE IF NOT EXISTS ticket (id int NOT NULL AUTO_INCREMENT, start_date TIMESTAMP, endDate TIMESTAMP, plate varchar(100), user_id INT, PRIMARY KEY (`id`));
+CREATE TABLE IF NOT EXISTS ticket (id int NOT NULL AUTO_INCREMENT, start_date TIMESTAMP, end_date TIMESTAMP, plate varchar(100), user_id INT, PRIMARY KEY (`id`));
 
 
 
