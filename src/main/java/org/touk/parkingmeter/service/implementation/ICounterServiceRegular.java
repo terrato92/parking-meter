@@ -1,12 +1,14 @@
 package org.touk.parkingmeter.service.implementation;
 
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.service.CounterService;
 
 import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
+@Primary
 @Service("regular")
 public class ICounterServiceRegular implements CounterService {
 
