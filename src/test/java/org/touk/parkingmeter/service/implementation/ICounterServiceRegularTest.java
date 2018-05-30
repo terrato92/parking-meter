@@ -12,8 +12,6 @@ import static org.junit.Assert.assertEquals;
 
 public class ICounterServiceRegularTest {
 
-
-
     @Mock
     private CounterService counterService;
 
@@ -26,7 +24,7 @@ public class ICounterServiceRegularTest {
 
     @Test
     public void parkingRates() throws Exception {
-        Long time = 86400000L;
+        Long time = 7524000L;
 
         BigDecimal fee = counterService.parkingRates(time);
 
