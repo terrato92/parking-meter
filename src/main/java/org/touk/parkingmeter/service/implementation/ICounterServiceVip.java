@@ -25,7 +25,7 @@ public class ICounterServiceVip implements CounterService {
         }
 
         if (minutes > 120) {
-            fee = fee.add(BigDecimal.valueOf(minutes - 120)).multiply(BigDecimal.valueOf(1.2));
+            fee = fee.add(BigDecimal.valueOf((minutes - 120)/60)).multiply(BigDecimal.valueOf(1.2));
         }
 
         return fee;

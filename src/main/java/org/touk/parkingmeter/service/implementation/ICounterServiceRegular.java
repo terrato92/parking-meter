@@ -28,7 +28,7 @@ public class ICounterServiceRegular implements CounterService {
         }
 
         if (minutes > 120) {
-            fee = fee.add(BigDecimal.valueOf(minutes - 120)).multiply(BigDecimal.valueOf(1.5));
+            fee = fee.add(BigDecimal.valueOf((minutes - 120)/60)).multiply(BigDecimal.valueOf(1.5));
         }
 
         return fee;
