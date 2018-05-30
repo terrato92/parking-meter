@@ -4,21 +4,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.touk.parkingmeter.domain.ParkingMachine;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.repositories.TicketRepository;
 import org.touk.parkingmeter.service.CounterService;
-import org.touk.parkingmeter.service.TimeService;
 import org.touk.parkingmeter.service.UserService;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -52,7 +50,7 @@ public class IUserServiceTest {
 
         when(ticketRepository.findById(anyLong())).thenReturn(ticketOptional);
 
-        double fee = userService.checkFee(ticket.getId());
+        BigDecimal fee = userService.checkFee(ticket.getId());
 
         System.out.println("fee:" + fee);
 

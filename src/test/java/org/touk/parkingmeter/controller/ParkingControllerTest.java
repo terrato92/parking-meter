@@ -14,8 +14,7 @@ import org.touk.parkingmeter.domain.User;
 import org.touk.parkingmeter.service.implementation.IParkingMachineService;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,9 +46,9 @@ public class ParkingControllerTest {
         User user = getUser();
         Ticket ticket = getTicket(parkingMachine, user);
 
-        when(iParkingMachineService.createTicket(anyLong(), anyLong(), anyLong(), anyString())).thenReturn(ticket);
+        when(iParkingMachineService.createTicket(any())).thenReturn(ticket);
 
-        mockMvc.perform(post("/parking/123/789/user/5/plate/lwwl34r4")
+        mockMvc.perform(post("/parking")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(ticket)))
                 .andExpect(status().isCreated())
