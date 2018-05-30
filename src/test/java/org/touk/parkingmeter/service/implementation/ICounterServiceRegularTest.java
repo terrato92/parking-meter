@@ -26,7 +26,7 @@ public class ICounterServiceRegularTest {
 
     @Test
     public void parkingRates() throws Exception {
-        Long time = 7524000L;
+        Long time = 86400000L;
 
         BigDecimal fee = counterService.parkingRates(time);
 
