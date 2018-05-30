@@ -30,17 +30,18 @@ public class IParkingMachineService implements ParkingMachineService {
     @Autowired
     private final ParkingMachineRepository parkingMachineRepository;
 
+    @Autowired
     private TimeService timeService;
 
-    private CounterService counterService;
 
-
-
-    public IParkingMachineService(UserRepository userRepository, TicketRepository ticketRepository, ParkingMachineRepository parkingMachineRepository) {
+    public IParkingMachineService(UserRepository userRepository,
+                                  TicketRepository ticketRepository,
+                                  ParkingMachineRepository parkingMachineRepository,
+                                  TimeService timeService) {
         this.userRepository = userRepository;
         this.ticketRepository = ticketRepository;
         this.parkingMachineRepository = parkingMachineRepository;
-        timeService = new ITimeService();
+        this.timeService = timeService;
 
     }
 
@@ -89,6 +90,7 @@ public class IParkingMachineService implements ParkingMachineService {
             ticketRepository.save(ticket);
 
             Long timeAtTheParking = timeService.calculateTimeService(ticket);
+            CounterService counterService;
             if (ticket.getUser().isVip()){
                 counterService = new ICounterServiceVip();
             } else {

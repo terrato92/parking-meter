@@ -33,6 +33,9 @@ public class IParkingMachineServiceTest {
     @Mock
     private TicketRepository ticketRepository;
 
+    @Mock
+    private TimeService timeService;
+
     private IParkingMachineService iParkingMachineService;
 
     @Mock
@@ -43,7 +46,7 @@ public class IParkingMachineServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        iParkingMachineService = new IParkingMachineService(userRepository, ticketRepository, parkingMachineRepository);
+        iParkingMachineService = new IParkingMachineService(userRepository, ticketRepository, parkingMachineRepository, timeService);
         convertToDto = new ConvertToDto();
     }
 
