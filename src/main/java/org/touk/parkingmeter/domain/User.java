@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Entity
 @Table
@@ -25,6 +26,6 @@ public class User {
     private boolean vip;
 
     @Transient
-    private double parkingFee;
+    private BigDecimal parkingFee;
 
 }
