@@ -1,5 +1,7 @@
 package org.touk.parkingmeter.service.implementation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.touk.parkingmeter.domain.Ticket;
 import org.touk.parkingmeter.service.TimeService;
@@ -10,6 +12,9 @@ import java.util.Date;
 
 @Service
 public class ITimeService implements TimeService {
+
+    private static final Logger log = LoggerFactory.getLogger(ITimeService.class);
+
     @Override
     public Long calculateTimeService(Ticket ticket) {
 
@@ -38,13 +43,10 @@ public class ITimeService implements TimeService {
             long diffHours = diff / (60 * 60 * 1000) % 24;
             long diffDays = diff / (24 * 60 * 60 * 1000);
 
-            // todo to do logow
-
-            System.out.print(diffDays + " days, ");
-            System.out.print(diffHours + " hours, ");
-            System.out.print(diffMinutes + " minutes, ");
-            System.out.print(diffSeconds + " seconds.");
-            System.out.println("\nDeparture time: " + ticket.getEndDate());
+            log.info("Days: {}", diffDays);
+            log.info("Hours: {}", diffHours);
+            log.info("Minutes: {}", diffMinutes);
+            log.info("Seconds: {}", diffSeconds);
 
         } catch (DateTimeException ex) {
             ex.printStackTrace();
